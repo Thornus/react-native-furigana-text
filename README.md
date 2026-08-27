@@ -1,4 +1,4 @@
-# react-native-furigana-text
+![screenshot](internal/screenshot.png)
 
 Native Japanese furigana rendering for React Native apps. Uses CoreText ruby annotations on iOS and custom `ReplacementSpan` rendering on Android.
 
