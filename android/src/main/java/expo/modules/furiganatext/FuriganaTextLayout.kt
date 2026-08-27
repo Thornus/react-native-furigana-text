@@ -4,6 +4,8 @@ import android.graphics.Paint
 import android.text.SpannableStringBuilder
 import android.text.StaticLayout
 import android.text.TextPaint
+import android.text.style.LineHeightSpan
+import android.text.style.ReplacementSpan
 
 object FuriganaTextLayout {
   fun build(
@@ -27,6 +29,15 @@ object FuriganaTextLayout {
         searchStart = end
       }
     }
+
+    val furiganaHeight = furiganaPaint.fontMetricsInt.descent - furiganaPaint.fontMetricsInt.ascent
+    spannable.setSpan(
+      UniformLineHeightSpan(textPaint, furiganaHeight),
+      0,
+      spannable.length,
+      SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
+    )
+
     return StaticLayout.Builder.obtain(spannable, 0, spannable.length, textPaint, widthPx)
       .setIncludePad(false)
       .setLineSpacing(0f, 1f)
@@ -37,5 +48,31 @@ object FuriganaTextLayout {
     val textPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply { textSize = fontSizeDp * density }
     val furiganaPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply { textSize = furiganaFontSizeDp * density }
     return textPaint to furiganaPaint
+  }
+
+  /**
+   * Sets every line's ascent/top to include the furigana height, so all lines
+   * have the same total height. The RubySpan no longer modifies font metrics,
+   * so this span is the sole source of line height.
+   */
+  class UniformLineHeightSpan(
+    private val textPaint: TextPaint,
+    private val furiganaHeight: Int
+  ) : LineHeightSpan {
+
+    override fun chooseHeight(
+      text: CharSequence,
+      start: Int,
+      end: Int,
+      spanstartv: Int,
+      lineHeight: Int,
+      fm: Paint.FontMetricsInt
+    ) {
+      // Only adjust the first line (spanstartv == 0) and subsequent lines.
+      // For the first line, also extend top upward.
+      val baseFm = textPaint.fontMetricsInt
+      fm.ascent = baseFm.ascent - furiganaHeight
+      fm.top = baseFm.top - furiganaHeight
+    }
   }
 }

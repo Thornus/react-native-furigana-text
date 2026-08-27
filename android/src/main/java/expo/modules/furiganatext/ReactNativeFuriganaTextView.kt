@@ -127,18 +127,7 @@ class ReactNativeFuriganaTextView(
       end: Int,
       fm: Paint.FontMetricsInt?
     ): Int {
-      val width = getSegmentWidth()
-
-      if (fm != null) {
-        val textFm = textPaint.fontMetricsInt
-        val furiganaHeight = furiganaPaint.fontMetricsInt.descent - furiganaPaint.fontMetricsInt.ascent
-        fm.ascent = textFm.ascent - furiganaHeight
-        fm.descent = textFm.descent
-        fm.top = textFm.top - furiganaHeight
-        fm.bottom = textFm.bottom
-      }
-
-      return width.toInt()
+      return getSegmentWidth().toInt()
     }
 
     override fun draw(

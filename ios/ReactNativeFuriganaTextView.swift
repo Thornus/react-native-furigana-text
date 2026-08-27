@@ -109,6 +109,11 @@ class ReactNativeFuriganaTextView: ExpoView {
       }
     }
 
+    let lineHeight = fontSize + furiganaFontSize + 2
+    let paragraphStyle = NSMutableParagraphStyle()
+    paragraphStyle.minimumLineHeight = lineHeight
+    attributed.addAttribute(.paragraphStyle, value: paragraphStyle, range: fullRange)
+
     return attributed
   }
 }
