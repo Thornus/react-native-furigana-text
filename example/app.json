@@ -1,0 +1,8 @@
+{
+  "ios": {
+    "bundleIdentifier": "com.thornus.react-native-furigana-text-example"
+  },
+  "android": {
+    "package": "com.thornus.reactnativefuriganatextexample"
+  }
+}

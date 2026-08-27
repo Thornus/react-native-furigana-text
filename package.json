@@ -1,0 +1,56 @@
+{
+  "name": "react-native-furigana-text",
+  "version": "1.0.0",
+  "description": "Native Japanese furigana rendering for React Native apps",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "scripts": {
+    "build": "node internal/module_scripts/build.js",
+    "clean": "node internal/module_scripts/clean.js",
+    "lint": "eslint src/",
+    "test": "node internal/module_scripts/test.js",
+    "prepare": "node internal/module_scripts/prepare.js",
+    "postinstall": "node internal/module_scripts/patch-expo-modules-jsi.js",
+    "open:ios": "node internal/module_scripts/open-ios.js",
+    "open:android": "node internal/module_scripts/open-android.js"
+  },
+  "keywords": [
+    "react-native",
+    "expo",
+    "react-native-furigana-text",
+    "ReactNativeFuriganaText"
+  ],
+  "repository": "https://github.com/Thornus/react-native-furigana-text",
+  "bugs": {
+    "url": "https://github.com/Thornus/react-native-furigana-text/issues"
+  },
+  "author": "thornus <luca.dasic@gmail.com> (https://github.com/Thornus)",
+  "license": "MIT",
+  "homepage": "https://github.com/Thornus/react-native-furigana-text#readme",
+  "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@types/jest": "^29.2.1",
+    "@types/react": "~19.1.1",
+    "babel-preset-expo": "~57.0.8",
+    "eslint": "~9.39.4",
+    "eslint-config-universe": "^15.0.3",
+    "expo": "^57.0.15",
+    "expo-modules-core": "~57.0.13",
+    "jest": "^29.7.0",
+    "jest-expo": "~55.0.9",
+    "prettier": "^3.0.0",
+    "react-native": "0.86.3",
+    "typescript": "^5.9.2"
+  },
+  "jest": {
+    "preset": "jest-expo",
+    "roots": [
+      "<rootDir>/src"
+    ]
+  },
+  "peerDependencies": {
+    "expo": "*",
+    "react": "*",
+    "react-native": "*"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "platforms": ["apple", "android"],
+  "apple": {
+    "modules": ["ReactNativeFuriganaText"]
+  },
+  "android": {
+    "modules": ["expo.modules.furiganatext.ReactNativeFuriganaTextModule"]
+  }
+}
