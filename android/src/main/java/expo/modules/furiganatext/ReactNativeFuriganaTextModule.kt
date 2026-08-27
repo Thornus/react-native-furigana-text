@@ -67,6 +67,18 @@ class ReactNativeFuriganaTextModule : Module() {
       Prop("furiganaColor") { view: ReactNativeFuriganaTextView, color: String ->
         view.setFuriganaTextColor(parseColorString(color))
       }
+
+      Prop("fontFamily") { view: ReactNativeFuriganaTextView, fontFamily: String? ->
+        view.setFontFamily(fontFamily)
+      }
+
+      Prop("fontWeight") { view: ReactNativeFuriganaTextView, fontWeight: String? ->
+        view.setFontWeight(fontWeight)
+      }
+
+      Prop("fontStyleValue") { view: ReactNativeFuriganaTextView, fontStyle: String? ->
+        view.setFontStyleValue(fontStyle)
+      }
     }
   }
 }

@@ -14,6 +14,9 @@ interface NativeFuriganaTextProps {
   color: string;
   furiganaFontSize: number;
   furiganaColor: string;
+  fontFamily?: string;
+  fontWeight?: string;
+  fontStyleValue?: string;
   selectable: boolean;
   onLayout?: (event: any) => void;
 }
@@ -23,7 +26,8 @@ const ReactNativeFuriganaText =
 
 export function FuriganaText({
   text,
-  style,
+  containerStyle,
+  fontStyle,
   fontSize = 16,
   color = '#000000',
   furiganaFontSize,
@@ -54,27 +58,30 @@ export function FuriganaText({
 
   const renderNative = () => (
     <ReactNativeFuriganaText
-      style={[{ alignSelf: 'stretch' }, measuredHeight !== undefined && { height: measuredHeight }, style]}
+      style={[{ alignSelf: 'stretch' }, measuredHeight !== undefined && { height: measuredHeight }, containerStyle]}
       text={baseText}
       furigana={furiganaMap}
       fontSize={fontSize}
       color={color}
       furiganaFontSize={calculatedFuriganaSize}
       furiganaColor={furiganaColor}
+      fontFamily={fontStyle?.fontFamily as string | undefined}
+      fontWeight={fontStyle?.fontWeight as string | undefined}
+      fontStyleValue={fontStyle?.fontStyle as string | undefined}
       selectable={selectable}
       onLayout={onLayout}
     />
   );
 
   const renderWeb = () => (
-    <View style={[styles.container, style]}>
-      <Text style={[styles.text, { fontSize, color }]}>
+    <View style={[styles.container, containerStyle]}>
+      <Text style={[styles.text, { fontSize, color }, fontStyle]}>
         {baseText.split(/([一-龯々])/g).map((segment, index) => {
           if (furiganaMap[segment]) {
             return (
-              <Text key={index} style={styles.kanjiContainer}>
-                <Text style={styles.furigana}>{furiganaMap[segment]}</Text>
-                <Text>{segment}</Text>
+              <Text key={index} style={[styles.kanjiContainer, fontStyle]}>
+                <Text style={[styles.furigana, fontStyle]}>{furiganaMap[segment]}</Text>
+                <Text style={fontStyle}>{segment}</Text>
               </Text>
             );
           }

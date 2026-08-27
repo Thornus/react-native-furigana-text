@@ -31,10 +31,20 @@ export default function App() {
         <Group name="Custom container style">
           <FuriganaText
             text="美しい景色[けしき]"
-            style={styles.customStyle}
+            containerStyle={styles.customStyle}
             fontSize={22}
             color="#0f172a"
             furiganaColor="#16a34a"
+          />
+        </Group>
+
+        <Group name="Font style">
+          <FuriganaText
+            text="日本語[にほんご]の勉強[べんきょう]"
+            fontStyle={{ fontWeight: 'bold', fontStyle: 'italic' }}
+            fontSize={22}
+            color="#1e3a8a"
+            furiganaColor="#dc2626"
           />
         </Group>
 

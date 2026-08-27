@@ -57,6 +57,18 @@ public class ReactNativeFuriganaText: Module {
       Prop("furiganaColor") { (view: ReactNativeFuriganaTextView, color: String) in
         view.furiganaColor = UIColor(hex: color) ?? .gray
       }
+
+      Prop("fontFamily") { (view: ReactNativeFuriganaTextView, fontFamily: String) in
+        view.fontFamily = fontFamily
+      }
+
+      Prop("fontWeight") { (view: ReactNativeFuriganaTextView, fontWeight: String) in
+        view.fontWeight = fontWeight
+      }
+
+      Prop("fontStyleValue") { (view: ReactNativeFuriganaTextView, fontStyle: String) in
+        view.fontStyleValue = fontStyle
+      }
     }
   }
 }

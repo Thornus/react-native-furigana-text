@@ -27,6 +27,18 @@ class ReactNativeFuriganaTextView: ExpoView {
     didSet { setNeedsDisplay() }
   }
 
+  var fontFamily: String? = nil {
+    didSet { setNeedsDisplay(); invalidateIntrinsicContentSize() }
+  }
+
+  var fontWeight: String? = nil {
+    didSet { setNeedsDisplay(); invalidateIntrinsicContentSize() }
+  }
+
+  var fontStyleValue: String? = nil {
+    didSet { setNeedsDisplay(); invalidateIntrinsicContentSize() }
+  }
+
   required init(appContext: AppContext? = nil) {
     super.init(appContext: appContext)
     isOpaque = false
@@ -71,11 +83,30 @@ class ReactNativeFuriganaTextView: ExpoView {
     CTFrameDraw(frame, context)
   }
 
+  private func resolveFont(size: CGFloat) -> UIFont {
+    var traits: UIFontDescriptor.SymbolicTraits = []
+    if fontWeight?.lowercased() == "bold" || fontWeight == "700" || fontWeight == "800" || fontWeight == "900" {
+      traits.insert(.traitBold)
+    }
+    if fontStyleValue?.lowercased() == "italic" {
+      traits.insert(.traitItalic)
+    }
+
+    let baseDescriptor = UIFontDescriptor(fontAttributes: [
+      .name: fontFamily as Any
+    ])
+    if let combined = baseDescriptor.withSymbolicTraits(traits) {
+      return UIFont(descriptor: combined, size: size)
+    }
+    return UIFont.systemFont(ofSize: size)
+  }
+
   private func createAttributedText() -> NSAttributedString {
     let attributed = NSMutableAttributedString(string: text)
     let fullRange = NSRange(location: 0, length: attributed.length)
 
-    let baseFont = UIFont.systemFont(ofSize: fontSize)
+    let baseFont = resolveFont(size: fontSize)
+    let furiganaFont = resolveFont(size: furiganaFontSize)
     attributed.addAttribute(.font, value: baseFont, range: fullRange)
     attributed.addAttribute(.foregroundColor, value: textColor, range: fullRange)
 
@@ -93,6 +124,7 @@ class ReactNativeFuriganaTextView: ExpoView {
         let rubyAttributes: [CFString: Any] = [
           kCTRubyAnnotationSizeFactorAttributeName: sizeFactor,
           kCTForegroundColorAttributeName: furiganaColor.cgColor,
+          kCTFontAttributeName: furiganaFont,
         ]
         let rubyAnnotation = CTRubyAnnotationCreateWithAttributes(
           .auto, .auto, .before, reading as CFString, rubyAttributes as CFDictionary

@@ -1,9 +1,14 @@
+import { TextStyle, ViewStyle } from 'react-native';
+
 export interface FuriganaTextProps {
   /** Text containing kanji with furigana in format: 漢字[かんじ] */
   text: string;
 
   /** Style for the text container */
-  style?: any;
+  containerStyle?: ViewStyle;
+
+  /** Text style applied to both the main text and furigana (e.g. fontFamily, fontWeight, fontStyle) */
+  fontStyle?: TextStyle;
 
   /** Font size for the main text */
   fontSize?: number;

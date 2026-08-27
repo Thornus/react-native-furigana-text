@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Typeface
 import android.text.StaticLayout
 import android.text.TextPaint
 import android.text.style.ReplacementSpan
@@ -25,6 +26,9 @@ class ReactNativeFuriganaTextView(
 
   private var text: String = ""
   private var furigana: Map<String, String> = emptyMap()
+  private var fontFamily: String? = null
+  private var fontWeight: String? = null
+  private var fontStyleValue: String? = null
   private val textPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
     color = Color.BLACK
     textSize = 16f * density
@@ -35,6 +39,24 @@ class ReactNativeFuriganaTextView(
   }
   private var cachedLayout: StaticLayout? = null
   private var needsLayoutRebuild = true
+
+  private fun resolveTypeface(): Typeface {
+    val family = Typeface.create(fontFamily ?: Typeface.DEFAULT.familyName, Typeface.NORMAL)
+    val style = when {
+      (fontWeight?.lowercase() == "bold" || fontWeight == "700" || fontWeight == "800" || fontWeight == "900") &&
+        fontStyleValue?.lowercase() == "italic" -> Typeface.BOLD_ITALIC
+      fontWeight?.lowercase() == "bold" || fontWeight == "700" || fontWeight == "800" || fontWeight == "900" -> Typeface.BOLD
+      fontStyleValue?.lowercase() == "italic" -> Typeface.ITALIC
+      else -> Typeface.NORMAL
+    }
+    return Typeface.create(family, style)
+  }
+
+  private fun applyTypeface() {
+    val typeface = resolveTypeface()
+    textPaint.typeface = typeface
+    furiganaPaint.typeface = typeface
+  }
 
   private fun rebuild() {
     needsLayoutRebuild = true
@@ -70,6 +92,24 @@ class ReactNativeFuriganaTextView(
   fun setFuriganaTextColor(color: Int) {
     furiganaPaint.color = color
     invalidate()
+  }
+
+  fun setFontFamily(family: String?) {
+    fontFamily = family
+    applyTypeface()
+    rebuild()
+  }
+
+  fun setFontWeight(weight: String?) {
+    fontWeight = weight
+    applyTypeface()
+    rebuild()
+  }
+
+  fun setFontStyleValue(style: String?) {
+    fontStyleValue = style
+    applyTypeface()
+    rebuild()
   }
 
   override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

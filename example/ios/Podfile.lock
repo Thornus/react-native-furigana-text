@@ -2054,7 +2054,7 @@ DEPENDENCIES:
   - ReactCodegen (from `build/generated/ios/ReactCodegen`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeDependencies (from `../node_modules/react-native/third-party-podspecs/ReactNativeDependencies.podspec`)
-  - ReactNativeFuriganaText (from `../.yalc/react-native-furigana-text/ios`)
+  - ReactNativeFuriganaText (from `../node_modules/react-native-furigana-text/ios`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 EXTERNAL SOURCES:
@@ -2232,7 +2232,7 @@ EXTERNAL SOURCES:
   ReactNativeDependencies:
     :podspec: "../node_modules/react-native/third-party-podspecs/ReactNativeDependencies.podspec"
   ReactNativeFuriganaText:
-    :path: "../.yalc/react-native-furigana-text/ios"
+    :path: "../node_modules/react-native-furigana-text/ios"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 

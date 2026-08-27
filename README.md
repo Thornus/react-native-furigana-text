@@ -35,7 +35,16 @@ Container styling:
 ```tsx
 <FuriganaText
   text="寿司[すし]"
-  style={{ padding: 10, backgroundColor: '#f1f5f9', borderRadius: 8 }}
+  containerStyle={{ padding: 10, backgroundColor: '#f1f5f9', borderRadius: 8 }}
+/>
+```
+
+Font styling applied to both main text and furigana:
+
+```tsx
+<FuriganaText
+  text="日本語[にほんご]の勉強[べんきょう]"
+  fontStyle={{ fontWeight: 'bold', fontStyle: 'italic' }}
 />
 ```
 
@@ -48,7 +57,8 @@ Container styling:
 | `color` | `string` | `'#000000'` | Text color (hex string) |
 | `furiganaFontSize` | `number` | `fontSize * 0.5` | Font size for furigana text |
 | `furiganaColor` | `string` | `'#666666'` | Furigana text color (hex string) |
-| `style` | `ViewStyle` | - | Style for the container |
+| `containerStyle` | `ViewStyle` | - | Style for the container |
+| `fontStyle` | `TextStyle` | - | Text style applied to both furigana and regular text (e.g. `fontFamily`, `fontWeight`, `fontStyle`) |
 | `selectable` | `boolean` | `false` | Enable text selection |
 
 ## Platform notes
