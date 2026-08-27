@@ -41,7 +41,6 @@ class ReactNativeFuriganaTextView(
   private var needsLayoutRebuild = true
 
   private fun resolveTypeface(): Typeface {
-    val family = Typeface.create(fontFamily ?: Typeface.DEFAULT.familyName, Typeface.NORMAL)
     val style = when {
       (fontWeight?.lowercase() == "bold" || fontWeight == "700" || fontWeight == "800" || fontWeight == "900") &&
         fontStyleValue?.lowercase() == "italic" -> Typeface.BOLD_ITALIC
@@ -49,7 +48,7 @@ class ReactNativeFuriganaTextView(
       fontStyleValue?.lowercase() == "italic" -> Typeface.ITALIC
       else -> Typeface.NORMAL
     }
-    return Typeface.create(family, style)
+    return Typeface.create(fontFamily, style)
   }
 
   private fun applyTypeface() {
