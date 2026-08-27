@@ -1,14 +1,13 @@
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { FuriganaText } from 'react-native-furigana-text';
 
 export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-        <Text style={styles.header}>FuriganaText Example</Text>
-
         <Group name="Basic">
-          <FuriganaText text="漢字[かんじ]を読みます。" style={styles.customStyle}/>
+          <FuriganaText text="漢字[かんじ]を読みます。"/>
         </Group>
 
         <Group name="Custom font size & color">
@@ -17,9 +16,7 @@ export default function App() {
             fontSize={22}
             color="#1f2937"
             furiganaColor="#2563eb"
-            style={styles.customStyle}
           />
-          <Text>Test Lower Boundary</Text>
         </Group>
 
         <Group name="Explicit furigana font size">
@@ -28,7 +25,6 @@ export default function App() {
             fontSize={60}
             furiganaFontSize={22}
             furiganaColor="#dc2626"
-            style={styles.customStyle}
           />
         </Group>
 
@@ -46,7 +42,6 @@ export default function App() {
           <FuriganaText
             text="長[なが]い文章[ぶんしょう]を書[か]いてみます。この文章[ぶんしょう]は折[お]り返[かえ]されるはずです。漢字[かんじ]が含[ふく]まれています。"
             selectable
-            fontSize={18}
           />
         </Group>
       </ScrollView>
