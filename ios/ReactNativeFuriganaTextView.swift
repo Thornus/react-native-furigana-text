@@ -121,12 +121,25 @@ class ReactNativeFuriganaTextView: ExpoView {
 
     // If a font family is specified, use it; otherwise use system font
     if let family = fontFamily, !family.isEmpty {
+        // 1. Exact PostScript/face-name lookup (covers bundled per-weight TTFs).
+        if let direct = UIFont(name: family, size: size) {
+            return direct
+        }
+
+        // 2. Family-name based descriptor (covers human-readable family names
+        //    like "LINE Seed JP" where the weight trait picks the face).
         let attributes: [UIFontDescriptor.AttributeName: Any] = [
             .family: family,
             .traits: traits
         ]
         let descriptor = UIFontDescriptor(fontAttributes: attributes)
-        return UIFont(descriptor: descriptor, size: size)
+        let familyFont = UIFont(descriptor: descriptor, size: size)
+        if familyFont.familyName == family {
+            return familyFont
+        }
+
+        // 3. Last resort: system font with the requested weight.
+        return UIFont.systemFont(ofSize: size, weight: weight)
     } else {
         // Use system font with weight (most reliable path).
         // NOTE: do NOT use withSymbolicTraits(.traitItalic) on a weighted system
