@@ -84,21 +84,76 @@ class ReactNativeFuriganaTextView: ExpoView {
   }
 
   private func resolveFont(size: CGFloat) -> UIFont {
-    var traits: UIFontDescriptor.SymbolicTraits = []
-    if fontWeight?.lowercased() == "bold" || fontWeight == "700" || fontWeight == "800" || fontWeight == "900" {
-      traits.insert(.traitBold)
-    }
-    if fontStyleValue?.lowercased() == "italic" {
-      traits.insert(.traitItalic)
+    // Map string weight to UIFont.Weight
+    let weight: UIFont.Weight
+    switch fontWeight?.lowercased() {
+    case "bold", "700":
+        weight = .bold
+    case "800":
+        weight = .heavy
+    case "900":
+        weight = .black
+    case "600":
+        weight = .semibold
+    case "500":
+        weight = .medium
+    case "400", "normal", nil:
+        weight = .regular
+    case "300":
+        weight = .light
+    case "200":
+        weight = .thin
+    case "100":
+        weight = .ultraLight
+    default:
+        weight = .regular
     }
 
-    let baseDescriptor = UIFontDescriptor(fontAttributes: [
-      .name: fontFamily as Any
-    ])
-    if let combined = baseDescriptor.withSymbolicTraits(traits) {
-      return UIFont(descriptor: combined, size: size)
+    // Build traits dictionary with explicit weight
+    var traits: [UIFontDescriptor.TraitKey: Any] = [
+        .weight: weight
+    ]
+
+    // Add italic if requested
+    if fontStyleValue?.lowercased() == "italic" {
+        traits[.symbolic] = UIFontDescriptor.SymbolicTraits.traitItalic.rawValue
     }
-    return UIFont.systemFont(ofSize: size)
+
+    // If a font family is specified, use it; otherwise use system font
+    if let family = fontFamily, !family.isEmpty {
+        let attributes: [UIFontDescriptor.AttributeName: Any] = [
+            .family: family,
+            .traits: traits
+        ]
+        let descriptor = UIFontDescriptor(fontAttributes: attributes)
+        return UIFont(descriptor: descriptor, size: size)
+    } else {
+        // Use system font with weight (most reliable path).
+        // NOTE: do NOT use withSymbolicTraits(.traitItalic) on a weighted system
+        // font here — on iOS 26 that round-trip drops the weight trait and
+        // silently yields the regular face (e.g. '.SFUI-RegularItalic').
+        // Instead build the descriptor in one shot with both weight + italic.
+        let wantsItalic = fontStyleValue?.lowercased() == "italic"
+
+        var attributes: [UIFontDescriptor.AttributeName: Any] = [:]
+        if wantsItalic {
+            attributes[.family] = UIFont.systemFont(ofSize: size, weight: weight).familyName
+            attributes[.traits] = [
+                UIFontDescriptor.TraitKey.weight: weight,
+                UIFontDescriptor.TraitKey.symbolic: UIFontDescriptor.SymbolicTraits.traitItalic.rawValue
+            ]
+        }
+
+        if wantsItalic, let descriptor = UIFontDescriptor(fontAttributes: attributes).withDesign(.default) {
+            let font = UIFont(descriptor: descriptor, size: size)
+            if font.fontDescriptor.symbolicTraits.contains(.traitItalic) {
+                return font
+            }
+            return UIFont.systemFont(ofSize: size, weight: weight)
+        }
+
+        return UIFont.systemFont(ofSize: size, weight: weight)
+    }
   }
 
   private func createAttributedText() -> NSAttributedString {
